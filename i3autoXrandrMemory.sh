@@ -83,23 +83,19 @@ replace_json_nums() {
     local json="$1"
     local mon="$2"
     local -a new_nums=("${@:3}")
-
     # Convert the Bash array to a JSON array
     local new_nums_json=$(printf '%s,' "${new_nums[@]}")
     new_nums_json="[${new_nums_json%,}]"
-
     # Use jq to replace the "nums" array for the specified "mon"
     updated_json=$(jq --arg mon "$mon" --argjson new_nums "$new_nums_json" '
         map(if .mon == $mon then .nums = $new_nums else . end)
     ' <<< "$json")
-
     echo "$updated_json"
 }
 remove_elements() { # remove_elements in _______ from _________
     local -n array1="$1"  # Reference to the first array
     local -n array2="$2"  # Reference to the second array
     local result=()       # Resulting array without matching elements
-
     for item2 in "${array2[@]}"; do
         local found=false
         for item1 in "${array1[@]}"; do
@@ -112,8 +108,6 @@ remove_elements() { # remove_elements in _______ from _________
             result+=("$item2")
         fi
     done
-
-    # Return the resulting array
     echo "${result[@]}"
 }
 
@@ -161,9 +155,11 @@ for mon in "${gonemon[@]}"; do
     result+='{ "mon": "'$mon'", "nums": '"$nums"' }'
 done
 result=$(echo "$result" | jq -s -c)
+#Filter the cache, then append it and save it.
 if [[ -e $json_cache_path && -s $json_cache_path ]]; then
     cacheresult="$(cat $json_cache_path)"
     if [[ -n "$cacheresult" ]]; then
+        #old monitor cache for newly closed windows? Remove them from cache before we add new info for it later.
         for mon in "${gonemon[@]}"; do
             cacheresult="$(remove_by_mon "$cacheresult" "$mon")"
         done
@@ -172,6 +168,8 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
         readarray -t mons_array <<< "$(echo "$cacheresult" | jq -r '.[].mon')"
         if [[ -n "${mons_array[@]}" ]]; then
             for mon in "${mons_array[@]}"; do
+                #also, if the workspace was moved to a different monitor, and then you unplug it, 
+                #remove the workspace from the lists for other windows to avoid conflicts
                 readarray -t cachenums_array <<< "$(echo "$cacheresult" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
                 readarray -t nums_array <<< "$(echo "$result" | jq -r '.[].nums[]')"
                 if [[ "${#nums_array[@]}" -gt 0 && "${nums_array[0]}" != "" && "${#cachenums_array[@]}" -gt 0 && "${cachenums_array[0]}" != "" ]]; then
@@ -183,6 +181,7 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
             done
         fi
     fi
+    #Combine result and cache appropriately
     cacheresult=${cacheresult%']'}
     cacheresult=${cacheresult#'['}
     result=${result%']'}
@@ -191,7 +190,9 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
     [[ -n "$cacheresult" ]] && result+=$cacheresult
     result="$(echo "[$result]" | jq -c)"
 fi
+#save the new cache
 echo "$result" > $json_cache_path
+#and now to move them back.
 #using newmon and monwkspc.json, do extra monitor setups and then workspace moves for each newmon
 workspace_commands=()
 for mon in "${newmon[@]}"; do
