@@ -48,16 +48,16 @@ XRANDR_CONFIG_PATH=/home/<your_username>/.i3/configXrandrByOutput.sh
 ## notice that the output name is passed in as argument $1
 #######################################################################
 
-#keep in mind that it will not run the above script on 
-#displays it doesnt register as new, 
+#keep in mind that it will only run the above script on displays it registers as new.
 #i.e. it now shows up after the script runs xrandr --auto, and it did not before.
+
 #therefore, you should put the config commands you would like 
 #to run on your primary display in its own file, which will get run separately
 #because you probably wont be unplugging it. 
-#You can put it in the other one too, no one is stopping you. 
-#But this one always runs 1 time every run of the script at the end.
+#This one always runs 1 time every run of the script at the end. 
+#And it will have all data from this script passed to it in case you need it, (which you shouldn't)
 
-#if xrandr --auto works fine for your primary, you dont need to make this 2nd one.
+#if xrandr --auto works fine for your primary, you shouldn't need to write this one.
 
 XRANDR_PRIMARY_DISPLAY_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 
