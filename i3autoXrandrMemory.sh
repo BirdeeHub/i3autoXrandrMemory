@@ -27,7 +27,7 @@
 ## 4. Configure the udev rule
 
 #idk what you would need it for, but just in case, 
-#I passed the original i3 message, the json cache, newmon array, and gonemon array 
+#I passed the original i3 message, the json cache, initial_mons array, and final_mons array 
 #to XRANDR_PRIMARY_DISPLAY_CONFIG, for if you wanna do more xrandr config stuff that I didnt easily accomodate for. 
 #This means XRANDR_PRIMARY_DISPLAY_CONFIG has access to all the data that things in this script has, should you want it. 
 #I did not even need to write a XRANDR_PRIMARY_DISPLAY_CONFIG at all.
@@ -241,4 +241,4 @@ for cmd in "${workspace_commands[@]}"; do
     echo "$cmd" 
     bash -c "$cmd"
 done
-[[ -e $XRANDR_PRIMARY_DISPLAY_CONFIG && -s $XRANDR_PRIMARY_DISPLAY_CONFIG ]] && bash -c "$XRANDR_PRIMARY_DISPLAY_CONFIG \"$i3msgOUT\" \"$result\" \"${newmon[@]}\" \"${gonemon[@]}\""
+[[ -e $XRANDR_PRIMARY_DISPLAY_CONFIG && -s $XRANDR_PRIMARY_DISPLAY_CONFIG ]] && bash -c "$XRANDR_PRIMARY_DISPLAY_CONFIG \"$i3msgOUT\" \"$result\" \"${initial_mons[@]}\" \"${final_mons[@]}\""
