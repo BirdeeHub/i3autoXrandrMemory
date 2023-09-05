@@ -26,7 +26,10 @@
 ## 3. Set the location of the .json file that caches the workspace info.
 ## 4. Configure the udev rule
 
-#idk what you would need it for, but just in case, I passed the original i3 message, the json cache, newmon array, and gonemon array to XRANDR_PRIMARY_DISPLAY_CONFIG, if you wanna do more xrandr config stuff that I didnt easily accomodate for. This means XRANDR_PRIMARY_DISPLAY_CONFIG has access to all the data that things in this script has, should you want it.
+#idk what you would need it for, but just in case, 
+#I passed the original i3 message, the json cache, newmon array, and gonemon array 
+#to XRANDR_PRIMARY_DISPLAY_CONFIG, for if you wanna do more xrandr config stuff that I didnt easily accomodate for. 
+#This means XRANDR_PRIMARY_DISPLAY_CONFIG has access to all the data that things in this script has, should you want it. I did not even need to write a XRANDR_PRIMARY_DISPLAY_CONFIG at all.
 
 #Instructions for the above usage steps below:
 
