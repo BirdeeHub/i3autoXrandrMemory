@@ -39,6 +39,8 @@ json_cache_path=~/.i3/monwkspc.json
 
 #######################################################################
 #I tried this to trigger on plug in and unplug, but it isnt working
+#I first changed the paths to absolute paths
+#then I ran:
 #udevadm monitor --property
 #look for devname when u plug in or unplug monitors
 
