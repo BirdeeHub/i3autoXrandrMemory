@@ -5,18 +5,19 @@
 ##requires jq for json parsing##
 ################################
 ## Behaviour: 
+#it will deal with any conflicts when saving by defaulting to the newest location of workspaces
 
 #When you unplug a monitor, it saves the workspaces on it, and xrandr --auto will
 #move it to the primary.
 #it will then run the script at XRANDR_PRIMARY_DISPLAY_CONFIG
-#it will deal with any conflicts when saving by defaulting to the newest location of workspaces
 
 #When you plug in a monitor, it searches cache for what workspaces to move to it,
 #it then runs the script at XRANDR_CONFIG_PATH 
 #(with the output name as an argument for each new monitor)
 #it then moves the workspaces
 #it then runs the script at XRANDR_PRIMARY_DISPLAY_CONFIG
-#it will deal with any conflicts by defaulting to the newest location of workspaces
+
+#idk what you would need to do it for, but its pretty easy to add arguments to XRANDR_PRIMARY_DISPLAY_CONFIG, or just put extra stuff at the end of this file if you wanna do more xrandr config stuff that I didnt easily accomodate for. The workspace moving is the hard part. The new and removed monitors are just in arrays you can loop through
 
 ##Usage:
 ## 1. Ensure that you have 'jq' installed on your system.
@@ -26,7 +27,7 @@
 ## 3. set the location of the .json file that caches the workspace info.
 ## 4. Configure the udev rule
 
-#Instructions for the above, below:
+#Instructions for the above usage steps below:
 
 ##XRANDR_CONFIG_PATH gets run 1 time per monitor plugged in,
 ## with the xrandr output of the monitor as the argument
@@ -42,6 +43,7 @@ XRANDR_CONFIG_PATH=/home/<your_username>/.i3/configXrandrByOutput.sh
 #    xrandr --output HDMI-1 --mode 1920x1080
 #    xrandr --output HDMI-1 --rate 50.00
 #fi
+
 ## notice that the output name is passed in as argument $1
 #######################################################################
 
@@ -60,8 +62,8 @@ XRANDR_PRIMARY_DISPLAY_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 
 #######################################################################
 
-#the script makes and uses this .json file.
-json_cache_path=/home/<your_username>/monwkspc.json
+#the script makes and uses this .json file. set it to an appropriate directory
+json_cache_path=/home/<your_username>/.i3/monwkspc.json
 
 #######################################################################
 #sudo nano /etc/udev/rules.d/95-monitor-hotplug.rules
