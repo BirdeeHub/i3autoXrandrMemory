@@ -161,11 +161,9 @@ done
 result=$(echo "$result" | jq -s -c)
 if [[ -e $json_cache_path && -s $json_cache_path ]]; then
     cacheresult="$(cat $json_cache_path)"
-    echo "$cacheresult"
     if [[ -n "$cacheresult" ]]; then
         for mon in "${gonemon[@]}"; do
             cacheresult="$(remove_by_mon "$cacheresult" "$mon")"
-            echo "mons removed: $cacheresult"
         done
     fi
     if [[ -n $cacheresult ]]; then
@@ -176,11 +174,8 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
                 readarray -t nums_array <<< "$(echo "$result" | jq -r '.[].nums[]')"
                 if [[ "${#nums_array[@]}" -gt 0 && "${nums_array[0]}" != "" && "${#cachenums_array[@]}" -gt 0 && "${cachenums_array[0]}" != "" ]]; then
                     if [[ $(check_intersection "${cachenums_array[@]}" "${nums_array[@]}") -eq 0 ]]; then
-                        echo "${cachenums_array[@]}" 
-                        echo "${nums_array[@]}"
                         newnums_array=($(remove_elements nums_array cachenums_array))
                         cacheresult=$(replace_json_nums "$cacheresult" "$mon" "${newnums_array[@]}")
-                        echo "nums removed: $cacheresult"
                     fi
                 fi
             done
@@ -199,7 +194,6 @@ echo "$result" > $json_cache_path
 workspace_commands=()
 for mon in "${newmon[@]}"; do
     [[ -e $XRANDR_CONFIG_PATH && -s $XRANDR_CONFIG_PATH ]] && bash -c "$XRANDR_CONFIG_PATH \"$mon\""
-    echo "$result"
     readarray -t nums_array <<< "$(echo "$result" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
     for num in "${nums_array[@]}"; do
         workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")")
