@@ -38,15 +38,14 @@ XRANDR_PRIMARY_DISPLAY_CONFIG=~/.i3/configPrimaryDisplay.sh
 json_cache_path=~/.i3/monwkspc.json
 
 #######################################################################
-#I tried this to trigger on plug in and unplug, but it isnt working:
-#I first changed the paths to absolute paths
+#I tried this to trigger on plug in and unplug, but it isnt working
 #udevadm monitor --property
 #look for devname when u plug in or unplug monitors
 
 #sudo nano /etc/udev/rules.d/99-monitor-hotplug.rules
 
 #put the following in the file (i only have 1 monitor port, so only 1 device for me)
-#SUBSYSTEM=="drm", ENV{DEVNAME}=="/dev/dri/card0", ACTION=="change", RUN+="/home/<my_username>/.i3/i3autoXrandrMemory.sh"
+#SUBSYSTEM=="drm", ENV{DEVNAME}=="/dev/dri/card0", ACTION=="change", RUN+="/home/birdee/.i3/i3autoXrandrMemory.sh"
 
 #then run:
 #sudo udevadm control --reload
@@ -161,10 +160,12 @@ for mon in "${gonemon[@]}"; do
 done
 result=$(echo "$result" | jq -s -c)
 if [[ -e $json_cache_path && -s $json_cache_path ]]; then
-    cacheresult="$(cat monwkspc.json)"
+    cacheresult="$(cat $json_cache_path)"
+    echo "$cacheresult"
     if [[ -n "$cacheresult" ]]; then
         for mon in "${gonemon[@]}"; do
             cacheresult="$(remove_by_mon "$cacheresult" "$mon")"
+            echo "mons removed: $cacheresult"
         done
     fi
     if [[ -n $cacheresult ]]; then
@@ -175,8 +176,11 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
                 readarray -t nums_array <<< "$(echo "$result" | jq -r '.[].nums[]')"
                 if [[ "${#nums_array[@]}" -gt 0 && "${nums_array[0]}" != "" && "${#cachenums_array[@]}" -gt 0 && "${cachenums_array[0]}" != "" ]]; then
                     if [[ $(check_intersection "${cachenums_array[@]}" "${nums_array[@]}") -eq 0 ]]; then
+                        echo "${cachenums_array[@]}" 
+                        echo "${nums_array[@]}"
                         newnums_array=($(remove_elements nums_array cachenums_array))
                         cacheresult=$(replace_json_nums "$cacheresult" "$mon" "${newnums_array[@]}")
+                        echo "nums removed: $cacheresult"
                     fi
                 fi
             done
@@ -195,6 +199,7 @@ echo "$result" > $json_cache_path
 workspace_commands=()
 for mon in "${newmon[@]}"; do
     [[ -e $XRANDR_CONFIG_PATH && -s $XRANDR_CONFIG_PATH ]] && bash -c "$XRANDR_CONFIG_PATH \"$mon\""
+    echo "$result"
     readarray -t nums_array <<< "$(echo "$result" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
     for num in "${nums_array[@]}"; do
         workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")")
