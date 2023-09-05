@@ -38,14 +38,15 @@ XRANDR_PRIMARY_DISPLAY_CONFIG=~/.i3/configPrimaryDisplay.sh
 json_cache_path=~/.i3/monwkspc.json
 
 #######################################################################
-#I tried this to trigger on plug in and unplug, but it isnt working
+#I tried this to trigger on plug in and unplug, but it isnt working:
+#I first changed the paths to absolute paths
 #udevadm monitor --property
 #look for devname when u plug in or unplug monitors
 
 #sudo nano /etc/udev/rules.d/99-monitor-hotplug.rules
 
 #put the following in the file (i only have 1 monitor port, so only 1 device for me)
-#SUBSYSTEM=="drm", ENV{DEVNAME}=="/dev/dri/card0", ACTION=="change", RUN+="/home/birdee/.i3/i3autoXrandrMemory.sh"
+#SUBSYSTEM=="drm", ENV{DEVNAME}=="/dev/dri/card0", ACTION=="change", RUN+="/home/<my_username>/.i3/i3autoXrandrMemory.sh"
 
 #then run:
 #sudo udevadm control --reload
