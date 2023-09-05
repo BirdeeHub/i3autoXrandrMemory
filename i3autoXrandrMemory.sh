@@ -1,7 +1,20 @@
 #!/bin/bash
 #######################################################################
-##requires jq for json parsing
-##set these to your preferred location if desired
+
+################################
+##requires jq for json parsing##
+################################
+
+##Usage:
+## 1. Ensure that you have 'jq' installed on your system.
+## 2. Customize the monitor configuration scripts:
+##    - Set 'XRANDR_CONFIG_PATH' to the path of your monitor configuration script.
+##    - Set 'XRANDR_PRIMARY_DISPLAY_CONFIG' to the path of your primary display configuration script (optional).
+## 3. set the location of the .json file that caches the workspace info.
+## 4. Configure the udev rule
+
+#Instructions for the above, below:
+
 ##XRANDR_CONFIG_PATH gets run 1 time per monitor plugged in,
 ## with the xrandr output of the monitor as the argument
 ## put the xrandr commands for each output that you wish to run in there.
@@ -16,7 +29,7 @@ XRANDR_CONFIG_PATH=/home/<your_username>/.i3/configXrandrByOutput.sh
 #    xrandr --output HDMI-1 --mode 1920x1080
 #    xrandr --output HDMI-1 --rate 50.00
 #fi
-
+## notice that the output name is passed in as argument $1
 #######################################################################
 
 #keep in mind that it will not run the above script on 
@@ -51,6 +64,9 @@ json_cache_path=/home/<your_username>/monwkspc.json
 #sudo udevadm control --reload
 #######################################################################
 #######################################################################
+# And here is the script:
+#######################################################################
+
 
 #Helper functions for getting and parsing info
 check_intersection() {
