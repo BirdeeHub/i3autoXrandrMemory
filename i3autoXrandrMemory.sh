@@ -26,7 +26,7 @@
 ## 3. Set the location of the .json file that caches the workspace info.
 ## 4. Configure the udev rule
 
-#idk what you would need to do it for, as there shouldnt be anything not doable from the 2 config files, but its pretty easy to add arguments to XRANDR_PRIMARY_DISPLAY_CONFIG, or just put extra stuff at the end of this file if you wanna do more xrandr config stuff that I didnt easily accomodate for. The workspace moving is the hard part. The new and removed monitors are just in arrays you can loop through
+#idk what you would need it for, but just in case, I passed the original i3 message, the json cache, newmon array, and gonemon array to XRANDR_PRIMARY_DISPLAY_CONFIG, if you wanna do more xrandr config stuff that I didnt easily accomodate for. This means XRANDR_PRIMARY_DISPLAY_CONFIG has access to all the data that things in this script has, should you want it.
 
 #Instructions for the above usage steps below:
 
@@ -237,4 +237,4 @@ for cmd in "${workspace_commands[@]}"; do
     echo "$cmd" 
     bash -c "$cmd"
 done
-[[ -e $XRANDR_PRIMARY_DISPLAY_CONFIG && -s $XRANDR_PRIMARY_DISPLAY_CONFIG ]] && bash -c "$XRANDR_PRIMARY_DISPLAY_CONFIG"
+[[ -e $XRANDR_PRIMARY_DISPLAY_CONFIG && -s $XRANDR_PRIMARY_DISPLAY_CONFIG ]] && bash -c "$XRANDR_PRIMARY_DISPLAY_CONFIG \"$i3msgOUT\" \"$result\" \"${newmon[@]}\" \"${gonemon[@]}\""
