@@ -17,7 +17,6 @@
 #it then moves the workspaces
 #it then runs the script at XRANDR_PRIMARY_DISPLAY_CONFIG
 
-#idk what you would need to do it for, but its pretty easy to add arguments to XRANDR_PRIMARY_DISPLAY_CONFIG, or just put extra stuff at the end of this file if you wanna do more xrandr config stuff that I didnt easily accomodate for. The workspace moving is the hard part. The new and removed monitors are just in arrays you can loop through
 
 ##Usage:
 ## 1. Ensure that you have 'jq' installed on your system.
@@ -27,11 +26,13 @@
 ## 3. Set the location of the .json file that caches the workspace info.
 ## 4. Configure the udev rule
 
+#idk what you would need to do it for, as there shouldnt be anything not doable from the 2 config files, but its pretty easy to add arguments to XRANDR_PRIMARY_DISPLAY_CONFIG, or just put extra stuff at the end of this file if you wanna do more xrandr config stuff that I didnt easily accomodate for. The workspace moving is the hard part. The new and removed monitors are just in arrays you can loop through
+
 #Instructions for the above usage steps below:
 
 ##XRANDR_CONFIG_PATH gets run 1 time per monitor plugged in,
 ## with the xrandr output of the monitor as the argument
-## put the xrandr commands for each output that you wish to run in there.
+## put the xrandr commands for each new output that you wish to run in there.
 
 XRANDR_CONFIG_PATH=/home/<your_username>/.i3/configXrandrByOutput.sh
 
