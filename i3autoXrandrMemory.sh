@@ -45,7 +45,7 @@ json_cache_path=~/.i3/monwkspc.json
 #sudo nano /etc/udev/rules.d/99-monitor-hotplug.rules
 
 #put the following in the file (i only have 1 monitor port, so only 1 device for me)
-#SUBSYSTEM=="drm", ENV{DEVNAME}=="/dev/dri/card0", ACTION=="change", RUN+="/home/birdee/.i3/i3autoXrandrMemory.sh"
+#SUBSYSTEM=="drm", ENV{DEVNAME}=="/dev/dri/card0", ACTION=="change", RUN+="/home/<my_username>/.i3/i3autoXrandrMemory.sh"
 
 #then run:
 #sudo udevadm control --reload
