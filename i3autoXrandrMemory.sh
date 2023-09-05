@@ -6,7 +6,7 @@
 ## with the xrandr output of the monitor as the argument
 ## put the xrandr commands for each output that you wish to run in there.
 
-XRANDR_CONFIG_PATH=~/.i3/configXrandrByOutput.sh
+XRANDR_CONFIG_PATH=/home/<your_username>/.i3/configXrandrByOutput.sh
 
 ##an example config might look like this:
 
@@ -30,24 +30,18 @@ XRANDR_CONFIG_PATH=~/.i3/configXrandrByOutput.sh
 
 #if xrandr --auto works fine for your primary, you dont need to make this 2nd one.
 
-XRANDR_PRIMARY_DISPLAY_CONFIG=~/.i3/configPrimaryDisplay.sh
+XRANDR_PRIMARY_DISPLAY_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 
 #######################################################################
 
 #the script makes and uses this .json file.
-json_cache_path=~/.i3/monwkspc.json
+json_cache_path=/home/<your_username>/monwkspc.json
 
 #######################################################################
-#I tried this to trigger on plug in and unplug, but it isnt working
-#I first changed the paths to absolute paths
-#then I ran:
-#udevadm monitor --property
-#look for devname when u plug in or unplug monitors
-
-#sudo nano /etc/udev/rules.d/99-monitor-hotplug.rules
+#sudo nano /etc/udev/rules.d/95-monitor-hotplug.rules
 
 #put the following in the file (i only have 1 monitor port, so only 1 device for me)
-#SUBSYSTEM=="drm", ENV{DEVNAME}=="/dev/dri/card0", ACTION=="change", RUN+="/home/<my_username>/.i3/i3autoXrandrMemory.sh"
+#KERNEL=="card0", SUBSYSTEM=="drm", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/<your_username>/.Xauthority", RUN+="/home/<your_username>/.i3/i3autoXrandrMemory.sh"
 
 #then run:
 #sudo udevadm control --reload
