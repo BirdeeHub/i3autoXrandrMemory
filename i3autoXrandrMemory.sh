@@ -24,7 +24,7 @@
 ## 2. Customize the monitor configuration scripts:
 ##    - Set 'XRANDR_CONFIG_PATH' to the path of your monitor configuration script.
 ##    - Set 'XRANDR_PRIMARY_DISPLAY_CONFIG' to the path of your primary display configuration script (optional).
-## 3. set the location of the .json file that caches the workspace info.
+## 3. Set the location of the .json file that caches the workspace info.
 ## 4. Configure the udev rule
 
 #Instructions for the above usage steps below:
