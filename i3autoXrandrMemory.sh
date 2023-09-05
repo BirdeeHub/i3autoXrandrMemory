@@ -38,12 +38,12 @@ XRANDR_CONFIG_PATH=/home/<your_username>/.i3/configXrandrByOutput.sh
 
 ##an example config might look like this:
 
-###\!\/bin\/bash
-#if [[ $1 == "HDMI-1" ]]; then
-#    xrandr --output HDMI-1 --left-of eDP-1
-#    xrandr --output HDMI-1 --mode 1920x1080
-#    xrandr --output HDMI-1 --rate 50.00
-#fi
+### #!/bin/bash
+### if [[ $1 == "HDMI-1" ]]; then
+###     xrandr --output HDMI-1 --left-of eDP-1
+###     xrandr --output HDMI-1 --mode 1920x1080
+###     xrandr --output HDMI-1 --rate 50.00
+### fi
 
 ## notice that the output name is passed in as argument $1
 #######################################################################
