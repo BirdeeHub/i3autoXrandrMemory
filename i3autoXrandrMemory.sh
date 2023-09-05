@@ -4,6 +4,19 @@
 ################################
 ##requires jq for json parsing##
 ################################
+## Behaviour: 
+
+#When you unplug a monitor, it saves the workspaces on it, and xrandr --auto will
+#move it to the primary.
+#it will then run the script at XRANDR_PRIMARY_DISPLAY_CONFIG
+#it will deal with any conflicts when saving by defaulting to the newest location of workspaces
+
+#When you plug in a monitor, it searches cache for what workspaces to move to it,
+#it then runs the script at XRANDR_CONFIG_PATH 
+#(with the output name as an argument for each new monitor)
+#it then moves the workspaces
+#it then runs the script at XRANDR_PRIMARY_DISPLAY_CONFIG
+#it will deal with any conflicts by defaulting to the newest location of workspaces
 
 ##Usage:
 ## 1. Ensure that you have 'jq' installed on your system.
