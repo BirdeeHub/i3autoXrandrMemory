@@ -151,6 +151,7 @@ remove_elements() { # remove_elements in _______ from _________
 
 #gather info before and after xrandr --auto
 i3msgOUT="$(i3-msg -t get_workspaces)"
+currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
 initial_mons=()
 while read -r line; do
     initial_mons+=("$line")
@@ -233,7 +234,7 @@ echo "$result" > $json_cache_path
 #and now to move them back.
 #using newmon and monwkspc.json, do extra monitor setups and then workspace moves for each newmon
 workspace_commands=()
-currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
+currentWkspcrecent="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
 workspaceChanged="false"
 for mon in "${newmon[@]}"; do
     [[ -e $XRANDR_NEWMON_CONFIG && -s $XRANDR_NEWMON_CONFIG ]] && bash -c "$XRANDR_NEWMON_CONFIG \"$mon\""
