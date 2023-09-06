@@ -151,7 +151,6 @@ remove_elements() { # remove_elements in _______ from _________
 
 #gather info before and after xrandr --auto
 i3msgOUT="$(i3-msg -t get_workspaces)"
-currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
 initial_mons=()
 while read -r line; do
     initial_mons+=("$line")
@@ -234,7 +233,7 @@ echo "$result" > $json_cache_path
 #and now to move them back.
 #using newmon and monwkspc.json, do extra monitor setups and then workspace moves for each newmon
 workspace_commands=()
-currentWkspcrecent="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
+currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
 workspaceChanged="false"
 for mon in "${newmon[@]}"; do
     [[ -e $XRANDR_NEWMON_CONFIG && -s $XRANDR_NEWMON_CONFIG ]] && bash -c "$XRANDR_NEWMON_CONFIG \"$mon\""
@@ -243,15 +242,12 @@ for mon in "${newmon[@]}"; do
         workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")") 
     done
     #if we are focusing the very first workspace moved, change that so we can move it.
-    if [[ "$currentWkspcrecent" == "${nums_array[0]}" && "$workspaceChanged" == "false" ]]; then
+    if [[ "$currentWkspc" == "${nums_array[0]}" && "$workspaceChanged" == "false" ]]; then
         workspaceChanged="true"
         bash -c "i3-msg \"workspace number "${nums_array[0]}"\""
     fi
 done
-
 for cmd in "${workspace_commands[@]}"; do
-    echo "$cmd" 
     bash -c "$cmd"
 done
-bash -c "i3-msg \"workspace number "$currentWkspc"\""
 [[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && bash -c "$XRANDR_ALWAYSRUN_CONFIG ${final_mons[@]}"
