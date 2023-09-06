@@ -76,8 +76,8 @@ json_cache_path=/home/<your_username>/.i3/monwkspc.json
 
 #sudo nano /etc/udev/rules.d/95-monitor-hotplug.rules
 
-#put the following in the file (i only have 1 monitor port, so only 1 device for me)
-#you may need to edit display and/or the card number to suit your needs, as well as the usernames and/or path to script
+#put the following in the file, and edit the username and path to script
+#you may need to edit display and/or the card number to suit your needs as well
 
 #KERNEL=="card0", SUBSYSTEM=="drm", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/<your_username>/.Xauthority", RUN+="/home/<your_username>/.i3/i3autoXrandrMemory.sh"
 
