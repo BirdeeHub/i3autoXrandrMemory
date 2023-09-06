@@ -230,15 +230,17 @@ echo "$result" > $json_cache_path
 #using newmon and monwkspc.json, do extra monitor setups and then workspace moves for each newmon
 workspace_commands=()
 currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
+workspaceChanged="false"
 for mon in "${newmon[@]}"; do
     [[ -e $XRANDR_CONFIG_PATH && -s $XRANDR_CONFIG_PATH ]] && bash -c "$XRANDR_CONFIG_PATH \"$mon\""
     readarray -t nums_array <<< "$(echo "$result" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
     for num in "${nums_array[@]}"; do
         workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")") 
-        if [[ "$currentWkspc" == "$num" ]]; then
-            bash -c "i3-msg \"workspace number $num\""
-        fi
     done
+    if [[ "$currentWkspc" == "${nums_array[0]}" && "$workspaceChanged" == "false" ]]; then
+        workspaceChanged="true"
+        bash -c "i3-msg \"workspace number $num\""
+    fi
 done
 
 for cmd in "${workspace_commands[@]}"; do
