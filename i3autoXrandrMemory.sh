@@ -71,6 +71,9 @@ XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 json_cache_path=/home/<your_username>/.i3/monwkspc.json
 
 #######################################################################
+
+#For the following udev rule to work, paths to config and cache must be an absolute path, because it runs as root.
+
 #sudo nano /etc/udev/rules.d/95-monitor-hotplug.rules
 
 #put the following in the file (i only have 1 monitor port, so only 1 device for me)
