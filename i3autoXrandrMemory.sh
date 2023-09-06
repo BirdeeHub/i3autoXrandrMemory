@@ -1,9 +1,6 @@
 #!/bin/bash
 #######################################################################
 
-################################
-##requires jq for json parsing##
-################################
 ## Behaviour: 
 #it will deal with any conflicts when saving by defaulting to the newest location of workspaces
 
@@ -16,7 +13,8 @@
 #it then moves the workspaces
 #it then runs the script at XRANDR_ALWAYSRUN_CONFIG
 
-
+###############################################################################################################
+##
 ##Usage:
 ## ALL STEPS IN THIS SECTION ARE REQUIRED UNLESS OTHERWISE STATED
 ## 1. Ensure that you have 'jq' installed on your system.
@@ -25,6 +23,8 @@
 #    - Optional: Set 'XRANDR_ALWAYSRUN_CONFIG' path to a script for everything else xrandr (optional if auto is fine).
 ## 3. Set the path for the .json file that caches the workspace info.
 ## 4. Optional: Configure the udev rule (if you want it to be automatic rather than keybind)
+##
+################################################################################################################
 
 #Instructions for the above usage steps below:
 
