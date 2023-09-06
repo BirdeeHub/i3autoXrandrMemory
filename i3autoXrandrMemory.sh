@@ -240,7 +240,7 @@ for mon in "${newmon[@]}"; do
     #if we are focusing the very first workspace moved, change that so we can move it.
     if [[ "$currentWkspc" == "${nums_array[0]}" && "$workspaceChanged" == "false" ]]; then
         workspaceChanged="true"
-        bash -c "i3-msg \"workspace number $num\""
+        bash -c "i3-msg \"workspace number "${nums_array[0]}"\""
     fi
 done
 
