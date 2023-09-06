@@ -29,9 +29,9 @@
 
 #Instructions for the above usage steps below:
 
-##XRANDR_NEWMON_CONFIG gets run 1 time per monitor plugged in,
+##This script gets run 1 time per monitor plugged in,
 ## with the xrandr output of the monitor as the argument
-
+## REQUIRED COMMAND INSIDE
 XRANDR_NEWMON_CONFIG=/home/<your_username>/.i3/configXrandrByOutput.sh
 
 ##an example config might look like this:
@@ -53,7 +53,7 @@ XRANDR_NEWMON_CONFIG=/home/<your_username>/.i3/configXrandrByOutput.sh
 
 #This script is provided the final list of active display output names as arguments, 
 #for you to run any other config. It is run at the end after the moving has completed.
-
+#It is not required by the moving script, but you might need it for your monitor.
 XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 
 ##an example config might look like this:
@@ -84,6 +84,7 @@ json_cache_path=/home/<your_username>/.i3/monwkspc.json
 
 #then run this to apply the change:
 #sudo udevadm control --reload
+
 #######################################################################
 
 
