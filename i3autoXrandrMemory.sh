@@ -251,4 +251,5 @@ for cmd in "${workspace_commands[@]}"; do
     echo "$cmd" 
     bash -c "$cmd"
 done
+bash -c "i3-msg \"workspace number "$currentWkspc"\""
 [[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && bash -c "$XRANDR_ALWAYSRUN_CONFIG ${final_mons[@]}"
