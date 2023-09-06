@@ -10,5 +10,7 @@ activeMons+=( "${activeMons[0]}" )
 found="false"
 for mon in "${activeMons[@]}"; do
     [[ "$found" == "true" && "$mon" != "$currentMon" ]] && exec i3-msg "workspace number $currentWkspc, move workspace to output $mon"
-    [[ "$mon" == "$currentMon" ]] && found="true" && bash -c "i3-msg \"workspace $currentWkspc\""
+    [[ "$mon" == "$currentMon" ]] && found="true" && bash -c "i3-msg \"workspace $currentWkspc\"" 
+    #selecting current workspace will swap focus to the previous workspace you focused temporarily, because you cannot move focused windows. 
+    #You could put anything here though. If you put a random word, it would create a new workspace with that name and select that temporarily instead. It will achieve the same thing.
 done
