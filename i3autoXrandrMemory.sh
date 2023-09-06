@@ -18,6 +18,7 @@
 
 
 ##Usage:
+
 ## 1. Ensure that you have 'jq' installed on your system.
 ## 2. Customize the monitor configuration scripts:
 ##    - Set 'XRANDR_NEWMON_CONFIG' path and write a script containing the only required command, and whatever else you want.
