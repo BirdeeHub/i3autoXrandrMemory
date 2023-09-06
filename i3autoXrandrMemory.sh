@@ -206,8 +206,8 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
                 readarray -t nums_array <<< "$(echo "$result" | jq -r '.[].nums[]')"
                 if [[ "${#nums_array[@]}" -gt 0 && "${nums_array[0]}" != "" && "${#cachenums_array[@]}" -gt 0 && "${cachenums_array[0]}" != "" ]]; then
                     if [[ $(check_intersection "${cachenums_array[@]}" "${nums_array[@]}") -eq 0 ]]; then
-                        newnums_array=($(remove_elements nums_array cachenums_array))
-                        cacheresult=$(replace_json_nums "$cacheresult" "$mon" "${newnums_array[@]}")
+                        newcachenums_array=($(remove_elements nums_array cachenums_array))
+                        cacheresult=$(replace_json_nums "$cacheresult" "$mon" "${newcachenums_array[@]}")
                     fi
                 fi
             done
