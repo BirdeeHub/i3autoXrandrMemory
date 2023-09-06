@@ -85,6 +85,8 @@ json_cache_path=/home/<your_username>/.i3/monwkspc.json
 #then run this to apply the change:
 #sudo udevadm control --reload
 #######################################################################
+
+
 #######################################################################
 # And here is the script:
 #######################################################################
