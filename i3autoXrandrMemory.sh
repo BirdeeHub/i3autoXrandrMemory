@@ -237,6 +237,7 @@ for mon in "${newmon[@]}"; do
     for num in "${nums_array[@]}"; do
         workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")") 
     done
+    #if we are focusing the very first workspace moved, change that so we can move it.
     if [[ "$currentWkspc" == "${nums_array[0]}" && "$workspaceChanged" == "false" ]]; then
         workspaceChanged="true"
         bash -c "i3-msg \"workspace number $num\""
