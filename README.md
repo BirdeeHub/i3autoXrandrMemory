@@ -4,4 +4,4 @@ i3autoXrandrMemory.sh is more complex. You add a udev rule for it, and it will a
 
 monWkspcCycle.sh is less complex. When you trigger it, it moves the current workspace to the next active monitor output
 
-Usage information for both scripts are inside the scripts.
+Usage information and instructions for both scripts are inside the scripts.
