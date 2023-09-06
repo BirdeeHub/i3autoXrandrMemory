@@ -68,7 +68,9 @@ XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 
 ########################################################################################
 
-#the script makes and uses this .json file. set it to an appropriate directory
+##REQUIRED:
+#the script makes and uses this .json file. 
+#set path to an appropriate directory for it to place this file
 json_cache_path=/home/<your_username>/.i3/monwkspc.json
 
 #######################################################################
