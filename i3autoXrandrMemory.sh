@@ -51,7 +51,7 @@ XRANDR_NEWMON_CONFIG=/home/<your_username>/.i3/configXrandrByOutput.sh
 #i.e. it now shows up after the script runs xrandr --auto, and it did not before.
 
 #This script is provided the final list of active display output names as arguments, 
-#for you to run any other config it is run at the end after the moving has completed.
+#for you to run any other config. It is run at the end after the moving has completed.
 
 XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 
