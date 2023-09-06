@@ -151,15 +151,9 @@ remove_elements() { # remove_elements in _______ from _________
 
 #gather info before and after xrandr --auto
 i3msgOUT="$(i3-msg -t get_workspaces)"
-initial_mons=()
-while read -r line; do
-    initial_mons+=("$line")
-done <<< "$(xrandr --listactivemonitors | awk '{print($4)}' | tail -n +2)"
+readarray -t initial_mons <<< "$(xrandr --listactivemonitors | awk '{print($4)}' | tail -n +2)"
 xrandr --auto
-final_mons=()
-while read -r line; do
-    final_mons+=("$line")
-done <<< "$(xrandr --listactivemonitors | awk '{print($4)}' | tail -n +2)"
+readarray -t final_mons <<< "$(xrandr --listactivemonitors | awk '{print($4)}' | tail -n +2)"
 gonemon=()
 for initmon in "${initial_mons[@]}"; do
     found=false
