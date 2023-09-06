@@ -96,7 +96,7 @@ json_cache_path=/home/<your_username>/.i3/monwkspc.json
 
 
 #Helper functions for getting and parsing info
-check_intersection() {
+check_conflict() {
     local arr1=("$1")  # First argument is array1
     local arr2=("$2")  # Second argument is array2
     for item1 in "${arr1[@]}"; do
@@ -208,7 +208,7 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
                 readarray -t cachenums_array <<< "$(echo "$cacheresult" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
                 readarray -t nums_array <<< "$(echo "$result" | jq -r '.[].nums[]')"
                 if [[ "${#nums_array[@]}" -gt 0 && "${nums_array[0]}" != "" && "${#cachenums_array[@]}" -gt 0 && "${cachenums_array[0]}" != "" ]]; then
-                    if [[ $(check_intersection "${cachenums_array[@]}" "${nums_array[@]}") -eq 0 ]]; then
+                    if [[ $(check_conflict "${cachenums_array[@]}" "${nums_array[@]}") -eq 0 ]]; then
                         newcachenums_array=($(remove_elements nums_array cachenums_array))
                         cacheresult=$(replace_json_nums "$cacheresult" "$mon" "${newcachenums_array[@]}")
                     fi
