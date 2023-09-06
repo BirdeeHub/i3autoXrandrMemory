@@ -81,9 +81,7 @@ json_cache_path=/home/<your_username>/.i3/monwkspc.json
 
 #KERNEL=="card0", SUBSYSTEM=="drm", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/<your_username>/.Xauthority", RUN+="/home/<your_username>/.i3/i3autoXrandrMemory.sh"
 
-#(replace the thing after RUN with the path to your i3autoXrandrMemory.sh copy)
-
-#then run:
+#then run this to apply the change:
 #sudo udevadm control --reload
 #######################################################################
 #######################################################################
