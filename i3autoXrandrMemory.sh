@@ -15,12 +15,13 @@
 
 ###############################################################################################################
 ##
-##Usage:
+## Usage:
 ## ALL STEPS IN THIS SECTION ARE REQUIRED UNLESS OTHERWISE STATED
+## 
 ## 1. Ensure that you have 'jq' installed on your system.
 ## 2. Customize the monitor configuration scripts:
-#    - Set 'XRANDR_NEWMON_CONFIG' path and write a script containing the only required command.
-#    - Optional: Set 'XRANDR_ALWAYSRUN_CONFIG' path to a script for everything else xrandr (optional if auto is fine).
+##   - Set 'XRANDR_NEWMON_CONFIG' path and write a script containing the only required command.
+##   - Optional: Set 'XRANDR_ALWAYSRUN_CONFIG' path to a script for everything else xrandr (optional if auto is fine).
 ## 3. Set the path for the .json file that caches the workspace info.
 ## 4. Optional: Configure the udev rule (if you want it to be automatic rather than keybind)
 ##
