@@ -9,6 +9,6 @@ readarray -t activeMons <<< "$(xrandr --listactivemonitors | awk '{print($4)}' |
 activeMons+=( "${activeMons[0]}" )
 found="false"
 for mon in "${activeMons[@]}"; do
-    [[ "$found" == "true" ]] && exec i3-msg "workspace number $currentWkspc, move workspace to output $mon"
+    [[ "$found" == "true" && "$mon" != "$currentMon" ]] && exec i3-msg "workspace number $currentWkspc, move workspace to output $mon"
     [[ "$mon" == "$currentMon" ]] && found="true" && bash -c "i3-msg \"workspace $currentWkspc\""
 done
