@@ -12,8 +12,7 @@
 #it will then run the script at XRANDR_ALWAYSRUN_CONFIG
 
 #When you plug in a monitor, it searches cache for what workspaces to move to it,
-#it then runs the script at XRANDR_NEWMON_CONFIG 
-#(with the output name as an argument for each new monitor)
+#it then runs the script at XRANDR_NEWMON_CONFIG for each new monitor
 #it then moves the workspaces
 #it then runs the script at XRANDR_ALWAYSRUN_CONFIG
 
@@ -21,22 +20,15 @@
 ##Usage:
 ## 1. Ensure that you have 'jq' installed on your system.
 ## 2. Customize the monitor configuration scripts:
-##    - Set 'XRANDR_NEWMON_CONFIG' to the path of your monitor configuration script.
-##    - Set 'XRANDR_ALWAYSRUN_CONFIG' to the path of your primary display configuration script (optional).
+##    - Set 'XRANDR_NEWMON_CONFIG' path and write a script containing the only required command, and whatever else you want.
+##    - Set 'XRANDR_ALWAYSRUN_CONFIG' to the path of the script for everything else (optional).
 ## 3. Set the location of the .json file that caches the workspace info.
 ## 4. Configure the udev rule
-
-#idk what you would need it for, but just in case, 
-#I passed the original i3 message, the json cache, initial_mons array, and final_mons array 
-#to XRANDR_ALWAYSRUN_CONFIG, for if you wanna do more xrandr config stuff that I didnt easily accomodate for. 
-#This means XRANDR_ALWAYSRUN_CONFIG has access to all the data that things in this script has, should you want it. 
-#I did not even need to write a XRANDR_ALWAYSRUN_CONFIG at all.
 
 #Instructions for the above usage steps below:
 
 ##XRANDR_NEWMON_CONFIG gets run 1 time per monitor plugged in,
 ## with the xrandr output of the monitor as the argument
-## put the xrandr commands for each new output that you wish to run in there.
 
 XRANDR_NEWMON_CONFIG=/home/<your_username>/.i3/configXrandrByOutput.sh
 
@@ -44,26 +36,33 @@ XRANDR_NEWMON_CONFIG=/home/<your_username>/.i3/configXrandrByOutput.sh
 
 ### #!/bin/bash
 ### if [[ $1 == "HDMI-1" ]]; then
+###     ##required command that specifies the new display should extend, rather than duplicate.
 ###     xrandr --output HDMI-1 --left-of eDP-1
-###     xrandr --output HDMI-1 --mode 1920x1080
-###     xrandr --output HDMI-1 --rate 50.00
 ### fi
 
 ## notice that the output name is passed in as argument $1
+## the only thing you must put in this config rather than the other one is
+# a command to tell i3 that the new monitor is to extend this one, not duplicate it.
+
 #######################################################################
 
 #keep in mind that it will only run the above script on displays it registers as new.
 #i.e. it now shows up after the script runs xrandr --auto, and it did not before.
 
-#therefore, you should put the config commands you would like 
-#to run on your primary display in its own file, which will get run separately
-#because you probably wont be unplugging it. 
-#This one always runs 1 time every run of the script at the end. 
-#And it will have all data from this script passed to it in case you need it, (which you shouldn't)
-
-#if xrandr --auto works fine for your primary, you shouldn't need to write this one.
+#This script is provided the final list of active display output names as arguments, 
+#for you to run any other config it is run at the end after the moving has completed.
 
 XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
+
+##an example config might look like this:
+
+### #!/bin/bash
+### for mon in "$@"; do
+###     if [[ $mon == "HDMI-1" ]]; then
+###         xrandr --output HDMI-1 --mode 1920x1080
+###         xrandr --output HDMI-1 --rate 50.00
+###     fi
+### done
 
 #######################################################################
 
@@ -248,4 +247,4 @@ for cmd in "${workspace_commands[@]}"; do
     echo "$cmd" 
     bash -c "$cmd"
 done
-[[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && bash -c "$XRANDR_ALWAYSRUN_CONFIG \"$i3msgOUT\" \"$result\" \"${initial_mons[@]}\" \"${final_mons[@]}\""
+[[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && bash -c "$XRANDR_ALWAYSRUN_CONFIG ${final_mons[@]}"
