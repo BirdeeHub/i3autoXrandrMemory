@@ -1,6 +1,6 @@
 #!/bin/bash
-#this script is completely unrelated to the other one.
-#However, it is very nice.
+#this script is completely separate from the other one.
+#However, it is also for moving workspaces between monitors.
 #when you run it, it moves the current workspace to the next monitor in the list.
 #Add a keybind to this script in ~/.i3/config so that you can do it with a keypress
 currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
