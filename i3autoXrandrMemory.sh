@@ -9,36 +9,36 @@
 
 #When you unplug a monitor, it saves the workspaces on it, and xrandr --auto will
 #move it to the primary.
-#it will then run the script at XRANDR_PRIMARY_DISPLAY_CONFIG
+#it will then run the script at XRANDR_ALWAYSRUN_CONFIG
 
 #When you plug in a monitor, it searches cache for what workspaces to move to it,
-#it then runs the script at XRANDR_CONFIG_PATH 
+#it then runs the script at XRANDR_NEWMON_CONFIG 
 #(with the output name as an argument for each new monitor)
 #it then moves the workspaces
-#it then runs the script at XRANDR_PRIMARY_DISPLAY_CONFIG
+#it then runs the script at XRANDR_ALWAYSRUN_CONFIG
 
 
 ##Usage:
 ## 1. Ensure that you have 'jq' installed on your system.
 ## 2. Customize the monitor configuration scripts:
-##    - Set 'XRANDR_CONFIG_PATH' to the path of your monitor configuration script.
-##    - Set 'XRANDR_PRIMARY_DISPLAY_CONFIG' to the path of your primary display configuration script (optional).
+##    - Set 'XRANDR_NEWMON_CONFIG' to the path of your monitor configuration script.
+##    - Set 'XRANDR_ALWAYSRUN_CONFIG' to the path of your primary display configuration script (optional).
 ## 3. Set the location of the .json file that caches the workspace info.
 ## 4. Configure the udev rule
 
 #idk what you would need it for, but just in case, 
 #I passed the original i3 message, the json cache, initial_mons array, and final_mons array 
-#to XRANDR_PRIMARY_DISPLAY_CONFIG, for if you wanna do more xrandr config stuff that I didnt easily accomodate for. 
-#This means XRANDR_PRIMARY_DISPLAY_CONFIG has access to all the data that things in this script has, should you want it. 
-#I did not even need to write a XRANDR_PRIMARY_DISPLAY_CONFIG at all.
+#to XRANDR_ALWAYSRUN_CONFIG, for if you wanna do more xrandr config stuff that I didnt easily accomodate for. 
+#This means XRANDR_ALWAYSRUN_CONFIG has access to all the data that things in this script has, should you want it. 
+#I did not even need to write a XRANDR_ALWAYSRUN_CONFIG at all.
 
 #Instructions for the above usage steps below:
 
-##XRANDR_CONFIG_PATH gets run 1 time per monitor plugged in,
+##XRANDR_NEWMON_CONFIG gets run 1 time per monitor plugged in,
 ## with the xrandr output of the monitor as the argument
 ## put the xrandr commands for each new output that you wish to run in there.
 
-XRANDR_CONFIG_PATH=/home/<your_username>/.i3/configXrandrByOutput.sh
+XRANDR_NEWMON_CONFIG=/home/<your_username>/.i3/configXrandrByOutput.sh
 
 ##an example config might look like this:
 
@@ -63,7 +63,7 @@ XRANDR_CONFIG_PATH=/home/<your_username>/.i3/configXrandrByOutput.sh
 
 #if xrandr --auto works fine for your primary, you shouldn't need to write this one.
 
-XRANDR_PRIMARY_DISPLAY_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
+XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 
 #######################################################################
 
@@ -232,7 +232,7 @@ workspace_commands=()
 currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
 workspaceChanged="false"
 for mon in "${newmon[@]}"; do
-    [[ -e $XRANDR_CONFIG_PATH && -s $XRANDR_CONFIG_PATH ]] && bash -c "$XRANDR_CONFIG_PATH \"$mon\""
+    [[ -e $XRANDR_NEWMON_CONFIG && -s $XRANDR_NEWMON_CONFIG ]] && bash -c "$XRANDR_NEWMON_CONFIG \"$mon\""
     readarray -t nums_array <<< "$(echo "$result" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
     for num in "${nums_array[@]}"; do
         workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")") 
@@ -248,4 +248,4 @@ for cmd in "${workspace_commands[@]}"; do
     echo "$cmd" 
     bash -c "$cmd"
 done
-[[ -e $XRANDR_PRIMARY_DISPLAY_CONFIG && -s $XRANDR_PRIMARY_DISPLAY_CONFIG ]] && bash -c "$XRANDR_PRIMARY_DISPLAY_CONFIG \"$i3msgOUT\" \"$result\" \"${initial_mons[@]}\" \"${final_mons[@]}\""
+[[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && bash -c "$XRANDR_ALWAYSRUN_CONFIG \"$i3msgOUT\" \"$result\" \"${initial_mons[@]}\" \"${final_mons[@]}\""
