@@ -46,10 +46,10 @@ XRANDR_NEWMON_CONFIG=/home/<your_username>/.i3/configXrandrByOutput.sh
 ## the only thing you must put in this config rather than the other one is
 # a command to tell i3 that the new monitor is to extend this one, not duplicate it.
 
-#######################################################################
-
 #keep in mind that it will only run the above script on displays it registers as new.
 #i.e. it now shows up after the script runs xrandr --auto, and it did not before.
+
+#######################################################################################
 
 #This script is provided the final list of active display output names as arguments, 
 #for you to run any other config. It is run at the end after the moving has completed.
@@ -66,7 +66,7 @@ XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 ###     fi
 ### done
 
-#######################################################################
+########################################################################################
 
 #the script makes and uses this .json file. set it to an appropriate directory
 json_cache_path=/home/<your_username>/.i3/monwkspc.json
