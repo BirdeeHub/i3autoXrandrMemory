@@ -3,6 +3,7 @@
 #However, it is also for moving workspaces between monitors.
 #when you run it, it moves the current workspace to the next monitor in the list.
 #Add a keybind to this script in ~/.i3/config so that you can do it with a keypress
+#-- Birdee
 currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
 currentMon="$(i3-msg -t get_outputs | jq -r ".[] | select(.current_workspace == \"$currentWkspc\") | .name")"
 readarray -t activeMons <<< "$(xrandr --listactivemonitors | awk '{print($4)}' | tail -n +2)"
