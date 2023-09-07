@@ -1,6 +1,9 @@
 #!/bin/bash
 #######################################################################
 
+# Swaps workspaces that were on a display before you unplug it, back onto it when you plug it back in.
+# --Birdee
+
 ## Behaviour: 
 #it will deal with any conflicts when saving by defaulting to the newest location of workspaces
 
