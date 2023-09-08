@@ -64,8 +64,7 @@ XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 ### #!/bin/bash
 ### for mon in "$@"; do
 ###     if [[ $mon == "HDMI-1" ]]; then
-###         xrandr --output HDMI-1 --mode 1920x1080
-###         xrandr --output HDMI-1 --rate 50.00
+###         xrandr --output HDMI-1 --mode 1920x1080 --rate 50.00
 ###     fi
 ### done
 
