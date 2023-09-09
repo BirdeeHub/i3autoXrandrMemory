@@ -233,20 +233,21 @@ echo "$result" > $json_cache_path
 #using newmon and monwkspc.json, do extra monitor setups and then workspace moves for each newmon
 workspace_commands=()
 currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
-workspaceChanged="false"
+workspaceChecked="false"
 for mon in "${newmon[@]}"; do
     [[ -e $XRANDR_NEWMON_CONFIG && -s $XRANDR_NEWMON_CONFIG ]] && bash -c "$XRANDR_NEWMON_CONFIG \"$mon\""
     readarray -t nums_array <<< "$(echo "$result" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
     for num in "${nums_array[@]}"; do
-        workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")") 
+        if [[ "$workspaceChecked" == "false" && "$currentWkspc" == "${nums_array[0]}" ]]; then
+            workspaceChecked="$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")"
+        else
+            workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")")
+        fi
+        [[ "$workspaceChecked" == "false" ]] && workspaceChecked="true"
     done
-    #if we are focusing the very first workspace moved, change that so we can move it.
-    if [[ "$currentWkspc" == "${nums_array[0]}" && "$workspaceChanged" == "false" ]]; then
-        workspaceChanged="true"
-        bash -c "i3-msg \"workspace number "${nums_array[0]}"\""
-    fi
 done
+[[ "$workspaceChecked" != "true" && "$workspaceChecked" != "false" ]] && workspace_commands+=( "$workspaceChecked" )
 for cmd in "${workspace_commands[@]}"; do
     bash -c "$cmd"
 done
-[[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && bash -c "$XRANDR_ALWAYSRUN_CONFIG ${final_mons[@]}"
+[[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && exec $XRANDR_ALWAYSRUN_CONFIG ${final_mons[@]}
