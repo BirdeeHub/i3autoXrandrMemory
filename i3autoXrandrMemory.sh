@@ -249,6 +249,7 @@ for mon in "${newmon[@]}"; do
         [[ "$workspaceChecked" == "false" ]] && workspaceChecked="true"
     done
 done
+#if we had the first one focused, add it to end here instead
 [[ "$workspaceChecked" != "true" && "$workspaceChecked" != "false" ]] && \
     workspace_commands+=( "$workspaceChecked" )
 for cmd in "${workspace_commands[@]}"; do
