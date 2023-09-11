@@ -78,7 +78,7 @@ XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 ##REQUIRED:
 #the script makes and uses this .json file. 
 #set path to an appropriate directory for it to place this file
-json_cache_path=/home/<your_username>/.i3/monwkspc.json
+JSON_CACHE_PATH=/home/<your_username>/.i3/monwkspc.json
 
 #######################################################################
 
@@ -198,8 +198,8 @@ for mon in "${gonemon[@]}"; do
 done
 result=$(echo "$result" | jq -s -c)
 #Filter the cache, then append it and save it.
-if [[ -e $json_cache_path && -s $json_cache_path ]]; then
-    cacheresult="$(cat $json_cache_path)"
+if [[ -e $JSON_CACHE_PATH && -s $JSON_CACHE_PATH ]]; then
+    cacheresult="$(cat $JSON_CACHE_PATH)"
     if [[ -n "$cacheresult" ]]; then
         #old monitor cache for newly closed windows? Remove them from cache before we add new info for it later.
         for mon in "${gonemon[@]}"; do
@@ -234,7 +234,7 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
     result="$(echo "[$result]" | jq -c)"
 fi
 #save the new cache
-echo "$result" > $json_cache_path
+echo "$result" > $JSON_CACHE_PATH
 #and now to move them back.
 #using newmon and monwkspc.json, do extra monitor setups and then workspace moves for each newmon
 workspace_commands=()
