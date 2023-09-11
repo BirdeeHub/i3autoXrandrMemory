@@ -209,11 +209,12 @@ if [[ -e $json_cache_path && -s $json_cache_path ]]; then
                 #remove the workspace from the lists for other windows to avoid conflicts
                 readarray -t cachenums_array <<< "$(echo "$cacheresult" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
                 readarray -t nums_array <<< "$(echo "$result" | jq -r '.[].nums[]')"
-                if [[ "${#nums_array[@]}" -gt 0 && "${nums_array[0]}" != "" && "${#cachenums_array[@]}" -gt 0 && "${cachenums_array[0]}" != "" ]]; then
-                    if [[ $(check_conflict "${cachenums_array[@]}" "${nums_array[@]}") -eq 0 ]]; then
-                        newcachenums_array=($(remove_elements nums_array cachenums_array))
-                        cacheresult=$(replace_json_nums "$cacheresult" "$mon" "${newcachenums_array[@]}")
-                    fi
+                if [[ "${#nums_array[@]}" -gt 0 && "${nums_array[0]}" != "" && \
+                    "${#cachenums_array[@]}" -gt 0 && "${cachenums_array[0]}" != "" && \
+                    $(check_conflict "${cachenums_array[@]}" "${nums_array[@]}") -eq 0 ]]
+                then
+                    newcachenums_array=($(remove_elements nums_array cachenums_array))
+                    cacheresult=$(replace_json_nums "$cacheresult" "$mon" "${newcachenums_array[@]}") 
                 fi
             done
         fi
@@ -235,10 +236,12 @@ workspace_commands=()
 currentWkspc="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).num')"
 workspaceChecked="false"
 for mon in "${newmon[@]}"; do
-    [[ -e $XRANDR_NEWMON_CONFIG && -s $XRANDR_NEWMON_CONFIG ]] && bash -c "$XRANDR_NEWMON_CONFIG \"$mon\""
+    [[ -e $XRANDR_NEWMON_CONFIG && -s $XRANDR_NEWMON_CONFIG ]] && \
+        bash -c "$XRANDR_NEWMON_CONFIG \"$mon\""
     readarray -t nums_array <<< "$(echo "$result" | jq -r ".[] | select(.mon == \"$mon\") | .nums[]")"
     for num in "${nums_array[@]}"; do
         if [[ "$workspaceChecked" == "false" && "$currentWkspc" == "${nums_array[0]}" ]]; then
+            #I do this check to ensure that it can still move the first one if you have it focused
             workspaceChecked="$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")"
         else
             workspace_commands+=("$(echo "i3-msg \"workspace number $num, move workspace to output $mon\";")")
@@ -246,8 +249,10 @@ for mon in "${newmon[@]}"; do
         [[ "$workspaceChecked" == "false" ]] && workspaceChecked="true"
     done
 done
-[[ "$workspaceChecked" != "true" && "$workspaceChecked" != "false" ]] && workspace_commands+=( "$workspaceChecked" )
+[[ "$workspaceChecked" != "true" && "$workspaceChecked" != "false" ]] && \
+    workspace_commands+=( "$workspaceChecked" )
 for cmd in "${workspace_commands[@]}"; do
     bash -c "$cmd"
 done
-[[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && exec $XRANDR_ALWAYSRUN_CONFIG ${final_mons[@]}
+[[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && \
+    exec $XRANDR_ALWAYSRUN_CONFIG ${final_mons[@]}
