@@ -256,3 +256,4 @@ for cmd in "${workspace_commands[@]}"; do
 done
 [[ -e $XRANDR_ALWAYSRUN_CONFIG && -s $XRANDR_ALWAYSRUN_CONFIG ]] && \
     exec $XRANDR_ALWAYSRUN_CONFIG ${final_mons[@]}
+
