@@ -68,6 +68,11 @@ XRANDR_ALWAYSRUN_CONFIG=/home/<your_username>/.i3/configPrimaryDisplay.sh
 ###     fi
 ### done
 
+#If you are experiencing screen tearing: 
+##do your xrandr in all 1 command in the XRANDR_NEWMON_CONFIG file, 
+##and then do just the primary in XRANDR_ALWAYSRUN_CONFIG. 
+##For some reason that can work better sometimes
+
 ########################################################################################
 
 ##REQUIRED:
