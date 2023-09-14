@@ -11,7 +11,9 @@ readarray -t activeMons <<< "$(xrandr --listactivemonitors | awk '{print($4)}' |
 activeMons+=( "${activeMons[0]}" )
 found="false"
 for mon in "${activeMons[@]}"; do
-    [[ "$found" == "true" && "$mon" != "$currentMon" ]] && exec i3-msg "workspace number $currentWkspc, move workspace to output $mon"
-    [[ "$mon" == "$currentMon" ]] && found="true" && bash -c "i3-msg \"workspace number $currentWkspc\"" 
+    [[ "$found" == "true" && "$mon" != "$currentMon" ]] && \
+        exec i3-msg "workspace number $currentWkspc, move workspace to output $mon"
+    [[ "$mon" == "$currentMon" ]] && found="true" && \
+        bash -c "i3-msg \"workspace number $currentWkspc\"" 
     #selecting current workspace will swap focus to the previous workspace you focused temporarily, because you cannot move focused windows. If there was only 1 monitor, on the next iteration, the exec will not trigger, and we will switch it back.
 done
