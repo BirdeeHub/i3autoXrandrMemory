@@ -42,7 +42,7 @@ XRANDR_NEWMON_CONFIG=/home/<your_username>/.i3/configXrandrByOutput.sh
 ### #!/bin/bash
 ### if [[ $1 == "HDMI-1" ]]; then
 ###     ##required command that specifies the new display should extend, rather than duplicate.
-###     xrandr --output HDMI-1 --left-of eDP-1
+###     xrandr --output HDMI-1 --left-of eDP-1 --preferred
 ### fi
 
 ## notice that the output name is passed in as argument $1
